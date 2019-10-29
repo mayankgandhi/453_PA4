@@ -1,0 +1,31 @@
+import java.io.*;
+
+public class ThreeAddressQuad   {
+    
+    TokenType op;
+    String src1, src2, dest;
+
+    public ThreeAddressQuad(TokenType op, String src1, String src2, String dest)
+    {
+        this.op = op;
+        this.src1 = src1;
+        this.src2 = src2;
+        this.dest = dest;
+    }
+
+	public String toString()
+    {
+        if(op.equals(TokenType.EQ))
+            return this.dest+ " = " + this.src1 + "\n";
+        else if( this.src1!=null && this.src2!=null )
+        	return this.op+": "+this.dest+ ", " + this.src1 + ", " + this.src2;
+        
+        return "";
+    }
+    
+    public static void main(String args[])
+    {
+        ThreeAddressQuad x = new ThreeAddressQuad(TokenType.EQ, "921", null, "temp1");
+        System.out.print(x.toString());
+    }
+}

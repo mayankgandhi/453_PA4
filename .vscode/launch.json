@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ThreeAddressQuad",
+            "request": "launch",
+            "mainClass": "ThreeAddressQuad"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ScannerTest",
+            "request": "launch",
+            "mainClass": "ScannerTest"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - SimpleJava",
+            "request": "launch",
+            "mainClass": "SimpleJava"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - SimpleJavaTest",
+            "request": "launch",
+            "mainClass": "SimpleJavaTest"
+        }
+    ]
+}
