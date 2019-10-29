@@ -20,7 +20,6 @@ public class MoreJava {
 	String lookahead = null; // keeps track of current token
 	StringBuilder stream; // our stream of tokens
 
-	
 	void program() {
 		if (lookahead.equals("void")) {
 			match('v');
@@ -636,7 +635,7 @@ public class MoreJava {
 	public static void main(String[] args) {
 		MoreJava parser = new MoreJava();
 		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4; int xx = 25; } }";
-		String eval = "void main() {  int res = 14; if(2 < 3 || 9 < 10) {res = 42;} res = 1; } ";
+		String eval = "void main() { int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }} ";
 		
 		System.out.println(parser.getThreeAddr(eval));
 	}

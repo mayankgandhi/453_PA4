@@ -20,7 +20,6 @@ public class MoreJava {
 	String lookahead = null; // keeps track of current token
 	StringBuilder stream; // our stream of tokens
 
-	
 	void program() {
 		if (lookahead.equals("void")) {
 			match('v');
@@ -208,8 +207,8 @@ public class MoreJava {
 			flabelID++;
 			
 			if (lookahead.contentEquals("&&")) {
-				thisLabel = tlabelID;
-				thisFalse = flabelID;
+				thisLabel = tlabelID-1;
+				thisFalse = flabelID-1;
 			}
 			
 			if (comparisonVal.equals("<")) {
@@ -261,20 +260,15 @@ public class MoreJava {
 			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
 			System.out.println("---------------"+ e.toString());
 			
-			boolean Falselabelflag = false;;
-		
-			
 			if(lookahead.equals("&&"))	{
 				match('&');
 				and_control_flow();
-				Falselabelflag=true;
 				
 			}
 			else if(lookahead.equals("||"))	{
 				match('|');
 				and_control_flow();
 			}
-			
 			
 			System.out.println("lookahead "+lookahead);
 
@@ -290,7 +284,7 @@ public class MoreJava {
 				exit_program ("Missing closing bracket");
 			match('b');
 			
-			if (Falselabelflag) {
+			if (lookahead.equals("&&")) {
 				this.threeAddressResult += "falseLabel" + (thisFalse-1) + "\n";
 			}else {
 				this.threeAddressResult += "falseLabel" + (thisFalse) + "\n";
@@ -636,7 +630,7 @@ public class MoreJava {
 	public static void main(String[] args) {
 		MoreJava parser = new MoreJava();
 		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4; int xx = 25; } }";
-		String eval = "void main() {  int res = 14; if(2 < 3 || 9 < 10) {res = 42;} res = 1; } ";
+		String eval = "void main() { int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }} ";
 		
 		System.out.println(parser.getThreeAddr(eval));
 	}

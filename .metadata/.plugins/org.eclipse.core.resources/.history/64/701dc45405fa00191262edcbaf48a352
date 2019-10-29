@@ -20,7 +20,6 @@ public class MoreJava {
 	String lookahead = null; // keeps track of current token
 	StringBuilder stream; // our stream of tokens
 
-	
 	void program() {
 		if (lookahead.equals("void")) {
 			match('v');
