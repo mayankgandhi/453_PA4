@@ -14,8 +14,9 @@ public class MoreJava {
 	// My global
 	String threeAddressResult = "";
 	LinkedList<ThreeAddressQuad> threeAddressResultList = new LinkedList<ThreeAddressQuad>();
-	ArrayList<String> ids = new ArrayList<String>();
-	ArrayList<String> globalIds = new ArrayList<String>();
+	ArrayList<ArrayList<String>> ids = new ArrayList<ArrayList<String>>();
+	ArrayList<String> idsOutter = new ArrayList<String>();
+	String assignedChar = "";
 	
 	ThreeAddressQuad e;
 	String prevSymbol = "";
@@ -24,6 +25,7 @@ public class MoreJava {
 
 	void program()
 	{
+		ids.add(idsOutter);
 		if(lookahead.equals("public") || lookahead.equals("private")  )
 		{
 			match('4');
@@ -58,7 +60,10 @@ public class MoreJava {
 			{
 			match('p');
 			String id = lookahead;
-			globalIds.add(id);
+			
+			//add
+			ids.get(ids.size()-1).add(id);
+			
 			match('p');
 			
 			if(lookahead.equals(";"))
@@ -79,13 +84,14 @@ public class MoreJava {
 	
 	void var_decl(boolean ScopeFlag) {
 		String id = lookahead;
-		ids.add(id);
+		ids.get(ids.size()-1).add(id);
 		match('p');
 	}
 	
 	void func() {
 		if (lookahead.equals("void")) {
-			ids.clear();
+			idsOutter = new ArrayList<String>();
+			ids.add(idsOutter);
 			match('v');
 			String id = lookahead;
 			
@@ -108,6 +114,7 @@ public class MoreJava {
 			if (!lookahead.equals("}"))
 				exit_program ("Missing closing bracket");
 			match('b');
+			ids.remove(ids.size()-1);
 		}
 		else {
 			exit_program("void not found");
@@ -153,41 +160,41 @@ public class MoreJava {
 			if (comparisonVal.equals("<")) {
 				this.threeAddressResult += "IF_LT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_LT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());				
+				//System.out.println("---------------"+ e.toString());				
 			}
 			else if (comparisonVal.equals(">")) {
 				this.threeAddressResult += "IF_GT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_GT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("<=")) {
 				this.threeAddressResult += "IF_LTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_LTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals(">=")) {
 				this.threeAddressResult += "IF_GTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_GTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("!=")) {
 				this.threeAddressResult += "IF_NE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_NE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("==")) {
 				this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			
 			this.threeAddressResult += "GOTO: falseLabel" + (thisFalse) + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 			
 			this.threeAddressResult += "trueLabel" + thisLabel + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 			
 		}
 	
@@ -208,41 +215,41 @@ public class MoreJava {
 		if (comparisonVal.equals("<")) {
 			this.threeAddressResult += "IF_LT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 			e = new ThreeAddressQuad("IF_LT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-			System.out.println("---------------"+ e.toString());				
+			//System.out.println("---------------"+ e.toString());				
 		}
 		else if (comparisonVal.equals(">")) {
 			this.threeAddressResult += "IF_GT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 			e = new ThreeAddressQuad("IF_GT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 		}
 		else if (comparisonVal.equals("<=")) {
 			this.threeAddressResult += "IF_LTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 			e = new ThreeAddressQuad("IF_LTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 		}
 		else if (comparisonVal.equals(">=")) {
 			this.threeAddressResult += "IF_GTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 			e = new ThreeAddressQuad("IF_GTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 		}
 		else if (comparisonVal.equals("!=")) {
 			this.threeAddressResult += "IF_NE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 			e = new ThreeAddressQuad("IF_NE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-			System.out.println("---------------"+ e.toString());
+		//	System.out.println("---------------"+ e.toString());
 		}
 		else if (comparisonVal.equals("==")) {
 			this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 			e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 		}
 		
 		this.threeAddressResult += "GOTO: falseLabel" + (thisFalse) + "\n";
 		e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
-		System.out.println("---------------"+ e.toString());
+		//System.out.println("---------------"+ e.toString());
 		
 		this.threeAddressResult += "trueLabel" + thisLabel + "\n";
 		e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
-		System.out.println("---------------"+ e.toString());
+		//System.out.println("---------------"+ e.toString());
 		
 		this.threeAddressResult += "falseLabel" + (thisFalse-1) + "\n";
 		}
@@ -276,32 +283,32 @@ public class MoreJava {
 			if (comparisonVal.equals("<")) {
 				this.threeAddressResult += "IF_LT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_LT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());				
+				//System.out.println("---------------"+ e.toString());				
 			}
 			else if (comparisonVal.equals(">")) {
 				this.threeAddressResult += "IF_GT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_GT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("<=")) {
 				this.threeAddressResult += "IF_LTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_LTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals(">=")) {
 				this.threeAddressResult += "IF_GTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_GTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("!=")) {
 				this.threeAddressResult += "IF_NE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_NE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("==")) {
 				this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			
 			if (lookahead.equals("&&")) {
@@ -317,10 +324,10 @@ public class MoreJava {
 				this.threeAddressResult += "trueLabel" + thisLabel + "\n";
 			}
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 			
 			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 			
 			boolean Falselabelflag = false;;
 		
@@ -337,7 +344,7 @@ public class MoreJava {
 			}
 			
 			
-			System.out.println("lookahead "+lookahead);
+			//System.out.println("lookahead "+lookahead);
 
 			if (!lookahead.equals(")"))
 				exit_program ("Missing closing parenthesis");
@@ -346,7 +353,13 @@ public class MoreJava {
 			if (!lookahead.equals("{"))
 				exit_program ("Missing openin bracket");
 			match('b'); // opening bracket			
+			
+			idsOutter = new ArrayList<String>();
+			ids.add(idsOutter);
+			
 			stmt_list();
+			
+			ids.remove(ids.size()-1);
 			if (!lookahead.equals("}"))
 				exit_program ("Missing closing bracket");
 			match('b');
@@ -359,7 +372,7 @@ public class MoreJava {
 			
 			
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 			
 		}
 		else if (lookahead.equals("while")) {
@@ -388,37 +401,37 @@ public class MoreJava {
 			if (comparisonVal.equals("<")) {
 				this.threeAddressResult += "IF_LT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_LT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals(">")) {
 				this.threeAddressResult += "IF_GT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_GT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("<=")) {
 				this.threeAddressResult += "IF_LTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_LTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals(">=")) {
 				this.threeAddressResult += "IF_GTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_GTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("!=")) {
 				this.threeAddressResult += "IF_NE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_NE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			else if (comparisonVal.equals("==")) {
 				this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
 				e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 			}
 			
 			this.threeAddressResult += "GOTO: falseLabel" + thisFalse + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 			
 			this.threeAddressResult += "trueLabel" + thisLabel + "\n";
 			
@@ -435,7 +448,7 @@ public class MoreJava {
 			
 			this.threeAddressResult += "GOTO: repeatLabel" + thisRepeat + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"repeatLabel"+Integer.toString(thisRepeat));
-			System.out.println("---------------"+ e.toString());
+		//	System.out.println("---------------"+ e.toString());
 			
 			if (!lookahead.equals("}"))
 				exit_program ("Missing closing bracket");
@@ -451,13 +464,13 @@ public class MoreJava {
 		if (lookahead.equals("int")) {
 			match('i');
 			String id = lookahead;
-			if(ids.contains(id))
+			if(ids.get(ids.size()-1).contains(id))
 			{
 				System.out.println("Error: IDS Already exist");
 				System.exit(1);
 			}
 			
-			ids.add(id);
+			ids.get(ids.size()-1).add(id);
 			match('d');
 			
 			if (lookahead.equals(";")) {
@@ -469,32 +482,37 @@ public class MoreJava {
 			prevSymbol = "";
 			int returnVal = E();
 			
-			if (!lookahead.equals(";"))
-				exit_program ("Missing semicolon");
-			match(';');
+			//System.out.print(lookahead);
+			if (lookahead.equals(";"))
+				match(';');
 			
-			this.threeAddressResult += id + " = temp" + returnVal + "\n";
+//			if (isInIDs(lookahead)) {
+//				this.threeAddressResult += lookahead + " = temp" + returnVal + "\n";
+//			}
+//			else {
+				this.threeAddressResult += id + " = temp" + returnVal + "\n";
+//			}
 			e = new ThreeAddressQuad("EQ", "temp"+Integer.toString(returnVal) ,null,id);
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 		}
-		else if(ids.contains(lookahead) || globalIds.contains((lookahead))) {
+		else if(isInIDs(lookahead)) {
 			String id = lookahead;
 			match('d');
 			
 			if (!lookahead.equals("="))
-				exit_program ("Missing equals");
+				exit_program ("Missing equals1");
 			match('e');
 			
 			prevSymbol = "";
 			int returnVal = E();
 			
 			if (!lookahead.equals(";"))
-				exit_program ("Missing semicolon");
+				exit_program ("Missing semicolon2");
 			match(';');
 			
 			this.threeAddressResult += id + " = temp" + returnVal + "\n";
 			e = new ThreeAddressQuad("EQ", "temp"+Integer.toString(returnVal) ,null,id);
-			System.out.println("---------------"+ e.toString());
+			//System.out.println("---------------"+ e.toString());
 		}
 		else
 		{
@@ -503,48 +521,16 @@ public class MoreJava {
 		}
 	}
 
-	int X()	{
-		int x = E();
-		int thisTempID = x;
-
-		while (true) {
-			// if current token is a plus
-			if (lookahead.equals("&&")) {
-				match('+');
-				int prev = x;
-				x = E();
-				thisTempID = tempID;
-				tempID++;
-
-				if (prevSymbol.equals("&&"))
-					prev++;
-				else
-					prevSymbol = "+";
-
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " && temp" + x + "\n";
-
-				continue;
+	boolean isInIDs(String toLook) {
+		for (int i = 0; i < ids.size(); i++) {
+			if (ids.get(i).contains(toLook)) {
+				return true;
 			}
-			// if current token is a minus
-			else if (lookahead.equals("||")) {
-				match('-');
-
-				int prev = x;
-				x = E();
-				thisTempID = tempID;
-				tempID++;
-				if (prevSymbol.equals("||"))
-					prev++;
-				else
-					prevSymbol = "-";
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " || temp" + x + "\n";
-
-				continue;
-			}
-			return thisTempID;
 		}
 		
+		return false;
 	}
+	
 	
 	int E() {
 		int x = T();
@@ -565,7 +551,15 @@ public class MoreJava {
 				else
 					prevSymbol = "+";
 
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " + temp" + x + "\n";
+				if (prev == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = " + assignedChar + " + temp" + x + "\n";
+				}
+				else if (x == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " + " + assignedChar + "\n";
+				}
+				else {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " + temp" + x + "\n";
+				}
 
 				continue;
 			}
@@ -582,7 +576,16 @@ public class MoreJava {
 					prev++;
 				else
 					prevSymbol = "-";
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " - temp" + x + "\n";
+				
+				if (prev == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = " + assignedChar + " - temp" + x + "\n";
+				}
+				else if (x == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " - " + assignedChar + "\n";
+				}
+				else {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " - temp" + x + "\n";
+				}
 
 				continue;
 			}
@@ -611,7 +614,15 @@ public class MoreJava {
 				else
 					prevSymbol = "*";
 
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " * temp" + x + "\n";
+				if (prev == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = " + assignedChar + " * temp" + x + "\n";
+				}
+				else if (x == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " * " + assignedChar + "\n";
+				}
+				else {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " * temp" + x + "\n";
+				}
 
 				continue;
 			}
@@ -629,7 +640,15 @@ public class MoreJava {
 				else
 					prevSymbol = "/";
 
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " / temp" + x + "\n";
+				if (prev == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = " + assignedChar + " / temp" + x + "\n";
+				}
+				else if (x == -9999) {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " / " + assignedChar + "\n";
+				}
+				else {
+					this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " / temp" + x + "\n";
+				}
 
 				continue;
 			}
@@ -648,7 +667,11 @@ public class MoreJava {
 			thisTempID = toReturn;
 			match(')');
 		}
-		// if current token is a num
+		else if (isInIDs(lookahead)) {
+			assignedChar = lookahead;
+			match('s');
+			thisTempID = -9999;
+		}
 		else {
 			try {
 				toReturn = Integer.parseInt(lookahead);
@@ -657,7 +680,7 @@ public class MoreJava {
 				tempID++;
 				this.threeAddressResult += "temp" + thisTempID + " = " + toReturn + "\n";
 				e = new ThreeAddressQuad("EQ",Integer.toString(toReturn),"null","temp" + thisTempID);
-				System.out.println("---------------"+ e.toString());
+				//System.out.println("---------------"+ e.toString());
 				return thisTempID;
 			} catch (Exception NumberFormatException) {
 				// nothing
@@ -696,12 +719,12 @@ public class MoreJava {
 
 	public static void main(String[] args) {
 		MoreJava parser = new MoreJava();
-		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4; int xx = 25; } }";
-		String  eval = "public class test {int x; int y; void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}"
-				+ "void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}}";
+		String eval = "public class test {int x; int y; void mainEntry()  {int x = 5;}   void blarg(){int x = 5} }";
+		int x = 4;
+		//String  eval = "public class test {int x; int y; void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ int x = 42; int y = 5}}"
+			//	+ "void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}}";
 
 		//eval = "void main() {  int res; if(2 < 3 || 9 < 10) {res = 42;} res = 1; } ";
-		
 		System.out.println(parser.getThreeAddr(eval));
 	}
 }
