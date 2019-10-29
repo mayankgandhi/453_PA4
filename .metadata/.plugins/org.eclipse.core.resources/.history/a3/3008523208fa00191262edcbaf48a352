@@ -14,7 +14,6 @@ public class MoreJava {
 	String threeAddressResult = "";
 	LinkedList<ThreeAddressQuad> threeAddressResultList = new LinkedList<ThreeAddressQuad>();
 	ArrayList<String> ids = new ArrayList<String>();
-	ArrayList<String> globalIds = new ArrayList<String>();
 	
 	ThreeAddressQuad e;
 	String prevSymbol = "";
@@ -36,8 +35,7 @@ public class MoreJava {
 			match('.');
 			String id = lookahead;
 			match(';');
-			System.out.println("--------> "+ lookahead);
-			if(lookahead.equals("{")) {
+			if(lookahead.equals('{')) {
 				match('a');
 				
 			}
@@ -54,10 +52,7 @@ public class MoreJava {
 		if(lookahead.equals("int"))
 			{
 			match('p');
-			String id = lookahead;
-			globalIds.add(id);
-			match('p');
-			
+			var_decl();
 			
 			if(lookahead.equals(";"))
 				match('p');
@@ -72,7 +67,7 @@ public class MoreJava {
 			return;
 	}
 	
-	void var_decl(boolean ScopeFlag) {
+	void var_decl() {
 		String id = lookahead;
 		ids.add(id);
 		match('p');
@@ -80,7 +75,6 @@ public class MoreJava {
 	
 	void func() {
 		if (lookahead.equals("void")) {
-			ids.clear();
 			match('v');
 			String id = lookahead;
 			
@@ -105,7 +99,7 @@ public class MoreJava {
 			match('b');
 		}
 		else {
-			
+			System.out.println(lookahead);
 			exit_program("void not found");
 		}
 	}
@@ -454,7 +448,6 @@ public class MoreJava {
 				System.out.println("Error: IDS Already exist");
 				System.exit(1);
 			}
-			
 			ids.add(id);
 			match('d');
 			
@@ -475,7 +468,7 @@ public class MoreJava {
 			e = new ThreeAddressQuad("EQ", "temp"+Integer.toString(returnVal) ,null,id);
 			System.out.println("---------------"+ e.toString());
 		}
-		else if(ids.contains(lookahead) || globalIds.contains((lookahead))) {
+		else if(ids.contains(lookahead)) {
 			String id = lookahead;
 			match('d');
 			
@@ -688,7 +681,7 @@ public class MoreJava {
 		// convert to stringbuilder to ease of use
 		stream = new StringBuilder(eval);
 		lookahead = scan.extractToken(stream).tokenVal;
-		program();
+		func();
 		return this.threeAddressResult;
 	}
 

@@ -14,73 +14,15 @@ public class MoreJava {
 	String threeAddressResult = "";
 	LinkedList<ThreeAddressQuad> threeAddressResultList = new LinkedList<ThreeAddressQuad>();
 	ArrayList<String> ids = new ArrayList<String>();
-	ArrayList<String> globalIds = new ArrayList<String>();
 	
 	ThreeAddressQuad e;
 	String prevSymbol = "";
 	String lookahead = null; // keeps track of current token
 	StringBuilder stream; // our stream of tokens
 
-	void program()
-	{
-		if(lookahead.equals("public") || lookahead.equals("private")  )
-		{
-			match('4');
-		}
-		else {
-			exit_program("ERROR: No class definition");
-		}
-			
-		if(lookahead.equals("class"))
-		{
-			match('.');
-			String id = lookahead;
-			match(';');
-			System.out.println("--------> "+ lookahead);
-			if(lookahead.equals("{")) {
-				match('a');
-				
-			}
-			prgm_list();
-			if(lookahead.equals("}")) {
-				match('a');
-			}
-		}	
-	}
-	
-	void prgm_list() {
-		// for var_decl
-		
-		if(lookahead.equals("int"))
-			{
-			match('p');
-			String id = lookahead;
-			globalIds.add(id);
-			match('p');
-			
-			
-			if(lookahead.equals(";"))
-				match('p');
-			prgm_list();
-			}
-		else if(lookahead.equals("void"))
-		{
-			func();
-			prgm_list();
-		}
-		else
-			return;
-	}
-	
-	void var_decl(boolean ScopeFlag) {
-		String id = lookahead;
-		ids.add(id);
-		match('p');
-	}
 	
 	void func() {
 		if (lookahead.equals("void")) {
-			ids.clear();
 			match('v');
 			String id = lookahead;
 			
@@ -105,14 +47,13 @@ public class MoreJava {
 			match('b');
 		}
 		else {
-			
 			exit_program("void not found");
 		}
 	}
 	
 	void exit_program(String errorMessage) {
-		System.out.println(errorMessage);
-		System.exit(1);
+//		System.out.println(errorMessage);
+//		System.exit(1);
 	}
 	
 	void stmt_list() {
@@ -454,8 +395,8 @@ public class MoreJava {
 				System.out.println("Error: IDS Already exist");
 				System.exit(1);
 			}
-			
 			ids.add(id);
+			System.out.println("HERERE ----- "+ ids.get(0));
 			match('d');
 			
 			if (lookahead.equals(";")) {
@@ -475,7 +416,7 @@ public class MoreJava {
 			e = new ThreeAddressQuad("EQ", "temp"+Integer.toString(returnVal) ,null,id);
 			System.out.println("---------------"+ e.toString());
 		}
-		else if(ids.contains(lookahead) || globalIds.contains((lookahead))) {
+		else if(ids.contains(lookahead)) {
 			String id = lookahead;
 			match('d');
 			
@@ -688,16 +629,14 @@ public class MoreJava {
 		// convert to stringbuilder to ease of use
 		stream = new StringBuilder(eval);
 		lookahead = scan.extractToken(stream).tokenVal;
-		program();
+		func();
 		return this.threeAddressResult;
 	}
 
 	public static void main(String[] args) {
 		MoreJava parser = new MoreJava();
 		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4; int xx = 25; } }";
-		String  eval = "public class test {int x; int y; void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}}";
-
-		//eval = "void main() {  int res; if(2 < 3 || 9 < 10) {res = 42;} res = 1; } ";
+		String eval = "void main() {  int res = 14; if(2 < 3 || 9 < 10) {res = 42;} res = 1; } ";
 		
 		System.out.println(parser.getThreeAddr(eval));
 	}
