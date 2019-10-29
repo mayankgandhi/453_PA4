@@ -1,8 +1,7 @@
-/*
- * Programming Assignment 4 - Alexis Tinoco, Mayank Gandhi
- */
 import java.util.*;
+
 import java.lang.String;
+
 public class MoreJava {
 
 	Scanner scan = new Scanner();
@@ -30,7 +29,6 @@ public class MoreJava {
 		}
 		else {
 			exit_program("ERROR: No class definition");
-			
 		}
 			
 		if(lookahead.equals("class"))
@@ -38,6 +36,7 @@ public class MoreJava {
 			match('.');
 			String id = lookahead;
 			match(';');
+			System.out.println("--------> "+ lookahead);
 			if(lookahead.equals("{")) {
 				match('a');
 				
@@ -46,9 +45,7 @@ public class MoreJava {
 			if(lookahead.equals("}")) {
 				match('a');
 			}
-		}
-		else
-			exit_program("ERROR: No class definition");
+		}	
 	}
 	
 	void prgm_list() {
@@ -61,11 +58,9 @@ public class MoreJava {
 			globalIds.add(id);
 			match('p');
 			
+			
 			if(lookahead.equals(";"))
 				match('p');
-			else
-				exit_program("ERROR: No closing semi-colon");
-			
 			prgm_list();
 			}
 		else if(lookahead.equals("void"))
@@ -110,6 +105,7 @@ public class MoreJava {
 			match('b');
 		}
 		else {
+			
 			exit_program("void not found");
 		}
 	}
@@ -120,9 +116,11 @@ public class MoreJava {
 	}
 	
 	void stmt_list() {
-		while(!lookahead.equals("}"))
+		while(!lookahead.equals("}") &&
+			    !lookahead.equals(")"))
 		{
 			smt();
+		//stmt_list();
 		}
 	}
 	
@@ -697,8 +695,7 @@ public class MoreJava {
 	public static void main(String[] args) {
 		MoreJava parser = new MoreJava();
 		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4; int xx = 25; } }";
-		String  eval = "public class test {int x; int y; void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}"
-				+ "void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}}";
+		String  eval = "public class test {int x; int y; void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}}";
 
 		//eval = "void main() {  int res; if(2 < 3 || 9 < 10) {res = 42;} res = 1; } ";
 		

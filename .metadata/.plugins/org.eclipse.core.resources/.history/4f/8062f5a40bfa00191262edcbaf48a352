@@ -1,8 +1,7 @@
-/*
- * Programming Assignment 4 - Alexis Tinoco, Mayank Gandhi
- */
 import java.util.*;
+
 import java.lang.String;
+
 public class MoreJava {
 
 	Scanner scan = new Scanner();
@@ -697,8 +696,7 @@ public class MoreJava {
 	public static void main(String[] args) {
 		MoreJava parser = new MoreJava();
 		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4; int xx = 25; } }";
-		String  eval = "public class test {int x; int y; void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}"
-				+ "void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}}";
+		String  eval = "public class test {int x; int y; void mainEntry(){ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; } int wx; wx = 3;  }}";
 
 		//eval = "void main() {  int res; if(2 < 3 || 9 < 10) {res = 42;} res = 1; } ";
 		

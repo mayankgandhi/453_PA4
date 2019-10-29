@@ -1,8 +1,7 @@
-/*
- * Programming Assignment 4 - Alexis Tinoco, Mayank Gandhi
- */
 import java.util.*;
+
 import java.lang.String;
+
 public class MoreJava {
 
 	Scanner scan = new Scanner();
