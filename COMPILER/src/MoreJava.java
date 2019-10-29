@@ -13,6 +13,7 @@ public class MoreJava {
 	// My global
 	String threeAddressResult = "";
 	LinkedList<ThreeAddressQuad> threeAddressResultList = new LinkedList<ThreeAddressQuad>();
+	ArrayList<String> ids = new ArrayList<String>();
 	
 	ThreeAddressQuad e;
 	String prevSymbol = "";
@@ -55,34 +56,81 @@ public class MoreJava {
 	}
 	
 	void stmt_list() {
-		while(lookahead.equals("int") ||
-				lookahead.equals("while") ||
-				lookahead.equals("if")) {
+		while(!lookahead.equals("}") &&
+			    !lookahead.equals(")"))
+		{
 			smt();
 		//stmt_list();
 		}
 	}
 	
 	void smt() {
-		if (lookahead.equals("int")) {
-			assignment();
-		}
-		else if (lookahead.equals("if") || lookahead.equals("while")){
+		if (lookahead.equals("if") || lookahead.equals("while")){
 			control_flow();
+		}
+		else 
+		{
+			assignment();
 		}
 		
 	}
-	
-	
-	void control_flow() {
-		if (lookahead.equals("if")) {
-			tempID = 0;
-			match('i'); // if
+	void and_control_flow()
+	{		
+			int left = E(); //left comparison
 			
-			if (!lookahead.equals("("))
-				exit_program ("Missing open parenthesis");
-			match('p'); //open parenthesis
+			String comparisonVal = lookahead;
+			match('c'); // comparison val
 			
+			int right = E(); // right comparison
+			
+			int thisLabel = tlabelID-1;
+			int thisFalse = flabelID-1;
+			tlabelID++;
+			flabelID++;
+			
+			if (comparisonVal.equals("<")) {
+				this.threeAddressResult += "IF_LT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_LT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());				
+			}
+			else if (comparisonVal.equals(">")) {
+				this.threeAddressResult += "IF_GT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_GT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals("<=")) {
+				this.threeAddressResult += "IF_LTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_LTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals(">=")) {
+				this.threeAddressResult += "IF_GTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_GTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals("!=")) {
+				this.threeAddressResult += "IF_NE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_NE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals("==")) {
+				this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			
+			this.threeAddressResult += "GOTO: falseLabel" + (thisFalse) + "\n";
+			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
+			System.out.println("---------------"+ e.toString());
+			
+			this.threeAddressResult += "trueLabel" + thisLabel + "\n";
+			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
+			System.out.println("---------------"+ e.toString());
+			
+		}
+	
+	void or_control_flow()
+	{		
 			int left = E(); //left comparison
 			
 			String comparisonVal = lookahead;
@@ -126,8 +174,7 @@ public class MoreJava {
 				System.out.println("---------------"+ e.toString());
 			}
 			
-			
-			this.threeAddressResult += "GOTO: falseLabel" + thisFalse + "\n";
+			this.threeAddressResult += "GOTO: falseLabel" + (thisFalse) + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
 			System.out.println("---------------"+ e.toString());
 			
@@ -135,8 +182,81 @@ public class MoreJava {
 			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
 			System.out.println("---------------"+ e.toString());
 			
+		}
+	
+	void control_flow() {
+		if (lookahead.equals("if")) {
+			tempID = 0;
+			match('i'); // if
+			
+			if (!lookahead.equals("("))
+				exit_program ("Missing open parenthesis");
+			match('p'); //open parenthesis
+			
+			int left = E(); //left comparison
+			
+			String comparisonVal = lookahead;
+			match('c'); // comparison val
+			
+			int right = E(); // right comparison
+			
+			int thisLabel = tlabelID+1;
+			int thisFalse = flabelID+1;
+			tlabelID++;
+			flabelID++;
+			
+			if (comparisonVal.equals("<")) {
+				this.threeAddressResult += "IF_LT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_LT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());				
+			}
+			else if (comparisonVal.equals(">")) {
+				this.threeAddressResult += "IF_GT: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_GT", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals("<=")) {
+				this.threeAddressResult += "IF_LTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_LTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals(">=")) {
+				this.threeAddressResult += "IF_GTE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_GTE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals("!=")) {
+				this.threeAddressResult += "IF_NE: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_NE", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
+			else if (comparisonVal.equals("==")) {
+				this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+				e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
+				System.out.println("---------------"+ e.toString());
+			}
 			
 			
+			this.threeAddressResult += "GOTO: falseLabel" + (thisFalse-1) + "\n";
+			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
+			System.out.println("---------------"+ e.toString());
+			
+			this.threeAddressResult += "trueLabel" + thisLabel + "\n";
+			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
+			System.out.println("---------------"+ e.toString());
+			
+			if(lookahead.equals("&&"))	{
+				match('&');
+				and_control_flow();
+				
+			}
+			else if(lookahead.equals("||"))	{
+				match('|');
+				and_control_flow();
+			}
+			
+			System.out.println("lookahead "+lookahead);
+
 			if (!lookahead.equals(")"))
 				exit_program ("Missing closing parenthesis");
 			match('p'); // closing parenthesis
@@ -148,7 +268,7 @@ public class MoreJava {
 			if (!lookahead.equals("}"))
 				exit_program ("Missing closing bracket");
 			match('b');
-			this.threeAddressResult += "falseLabel" + thisFalse + "\n";
+			this.threeAddressResult += "falseLabel" + (thisFalse-1) + "\n";
 			
 			
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
@@ -215,7 +335,7 @@ public class MoreJava {
 			
 			this.threeAddressResult += "trueLabel" + thisLabel + "\n";
 			
-			
+		
 			if (!lookahead.equals(")"))
 				exit_program ("Missing closing parenthesis");
 			match('p'); // closing parenthesis
@@ -244,6 +364,34 @@ public class MoreJava {
 		if (lookahead.equals("int")) {
 			match('i');
 			String id = lookahead;
+			if(ids.contains(id))
+			{
+				System.out.println("Error: IDS Already exist");
+				System.exit(1);
+			}
+			ids.add(id);
+			System.out.println("HERERE ----- "+ ids.get(0));
+			match('d');
+			
+			if (lookahead.equals(";")) {
+				match(';');
+				return;
+			}
+			match('e');
+			
+			prevSymbol = "";
+			int returnVal = E();
+			
+			if (!lookahead.equals(";"))
+				exit_program ("Missing semicolon");
+			match(';');
+			
+			this.threeAddressResult += id + " = temp" + returnVal + "\n";
+			e = new ThreeAddressQuad("EQ", "temp"+Integer.toString(returnVal) ,null,id);
+			System.out.println("---------------"+ e.toString());
+		}
+		else if(ids.contains(lookahead)) {
+			String id = lookahead;
 			match('d');
 			
 			if (!lookahead.equals("="))
@@ -260,6 +408,11 @@ public class MoreJava {
 			this.threeAddressResult += id + " = temp" + returnVal + "\n";
 			e = new ThreeAddressQuad("EQ", "temp"+Integer.toString(returnVal) ,null,id);
 			System.out.println("---------------"+ e.toString());
+		}
+		else
+		{
+			System.out.println("ERROR: " + lookahead + " doesn't exit. ");
+			System.exit(1);
 		}
 	}
 
@@ -456,8 +609,8 @@ public class MoreJava {
 
 	public static void main(String[] args) {
 		MoreJava parser = new MoreJava();
-		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4;} }";
-		String eval = "void main() { int xx = 3; if( 2 < 3 && 5 < 4 ){ xx = 42; }} ";
+		//String eval = "void main() { int xx = 3; while(3 < 2) { int xx = 4; int xx = 25; } }";
+		String eval = "void main() { int res = 14; if(2 < 3 || 9 < 10) {res = 42;} res = 1;} ";
 		
 		System.out.println(parser.getThreeAddr(eval));
 	}

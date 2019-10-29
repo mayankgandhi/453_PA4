@@ -182,6 +182,7 @@ public class Scanner{
               tokenType = TokenType.ID;
               String newId = nextChar;
               stream.deleteCharAt(0);
+              token = new Token(tokenType, newId);
               while (stream.length() != 0) {
                   char nextChar2 = stream.charAt(0);
                   if (Character.isDigit(nextChar2) ||

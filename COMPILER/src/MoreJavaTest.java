@@ -34,19 +34,7 @@ public class MoreJavaTest{
              "temp0 = 42\n"+
              "x = temp0\n"+
              "falseLabel0\n";
-    eval = "{ int x; x = 3; if(2 < 3 && 5 < 4){ x = 42; }}";
-    result ="temp0 = 3\n" + 
-    		"xx = temp0\n" + 
-    		"repeatLabel0\n" + 
-    		"temp0 = 3\n" + 
-    		"temp1 = 2\n" + 
-    		"IF_GT: temp0, temp1, trueLabel0\n" + 
-    		"GOTO: falseLabel0\n" + 
-    		"trueLabel0\n" + 
-    		"temp0 = 4\n" + 
-    		"xx = temp0\n" + 
-    		"GOTO: repeatLabel0\n" + 
-    		"falseLabel0";
+   
     assert(parser.getThreeAddr(eval).equals(result));
     System.out.println(parser.getThreeAddr(eval));
 
