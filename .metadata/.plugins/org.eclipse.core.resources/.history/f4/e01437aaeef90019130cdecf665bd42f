@@ -59,7 +59,6 @@ public class MoreJava {
 				lookahead.equals("while") ||
 				lookahead.equals("if")) {
 			smt();
-		//stmt_list();
 		}
 	}
 	
@@ -72,7 +71,6 @@ public class MoreJava {
 		}
 		
 	}
-	
 	
 	void control_flow() {
 		if (lookahead.equals("if")) {
@@ -125,7 +123,12 @@ public class MoreJava {
 				e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
 				System.out.println("---------------"+ e.toString());
 			}
-			
+			 else if (comparisonVal.equals("&&")) {
+			 	this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+			 }
+			 else if (comparisonVal.equals("||")) {
+			 	this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+			 }
 			
 			this.threeAddressResult += "GOTO: falseLabel" + thisFalse + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
@@ -134,8 +137,6 @@ public class MoreJava {
 			this.threeAddressResult += "trueLabel" + thisLabel + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
 			System.out.println("---------------"+ e.toString());
-			
-			
 			
 			if (!lookahead.equals(")"))
 				exit_program ("Missing closing parenthesis");
@@ -149,8 +150,6 @@ public class MoreJava {
 				exit_program ("Missing closing bracket");
 			match('b');
 			this.threeAddressResult += "falseLabel" + thisFalse + "\n";
-			
-			
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
 			System.out.println("---------------"+ e.toString());
 			
@@ -208,7 +207,34 @@ public class MoreJava {
 				e = new ThreeAddressQuad("IF_EQ", "trueLabel"+Integer.toString(thisLabel), "temp" + Integer.toString(left), "temp" + Integer.toString(right));
 				System.out.println("---------------"+ e.toString());
 			}
-			
+			else if (comparisonVal.equals("&&")) {
+			 	left = E();
+				
+				 comparisonVal = lookahead;
+				match('c'); // comparison value
+				
+				right = E();
+				thisLabel = tlabelID;
+				 thisFalse = flabelID;
+				tlabelID++;
+				flabelID++;
+			 	this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+
+			 }
+			 else if (comparisonVal.equals("||")) {
+			 	 left = E();
+				
+				 comparisonVal = lookahead;
+				match('c'); // comparison value
+				
+				 right = E();
+				 thisLabel = tlabelID;
+				 thisFalse = flabelID;
+				tlabelID++;
+				flabelID++;
+			 	this.threeAddressResult += "IF_EQ: temp" + left + ", temp" + right + ", trueLabel"+thisLabel + "\n" ;
+
+			 }
 			this.threeAddressResult += "GOTO: falseLabel" + thisFalse + "\n";
 			e = new ThreeAddressQuad("GOTO",null,null,"falseLabel"+Integer.toString(thisFalse));
 			System.out.println("---------------"+ e.toString());
@@ -261,49 +287,6 @@ public class MoreJava {
 			e = new ThreeAddressQuad("EQ", "temp"+Integer.toString(returnVal) ,null,id);
 			System.out.println("---------------"+ e.toString());
 		}
-	}
-
-	int X()	{
-		int x = E();
-		int thisTempID = x;
-
-		while (true) {
-			// if current token is a plus
-			if (lookahead.equals("&&")) {
-				match('+');
-				int prev = x;
-				x = E();
-				thisTempID = tempID;
-				tempID++;
-
-				if (prevSymbol.equals("&&"))
-					prev++;
-				else
-					prevSymbol = "+";
-
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " && temp" + x + "\n";
-
-				continue;
-			}
-			// if current token is a minus
-			else if (lookahead.equals("||")) {
-				match('-');
-
-				int prev = x;
-				x = E();
-				thisTempID = tempID;
-				tempID++;
-				if (prevSymbol.equals("||"))
-					prev++;
-				else
-					prevSymbol = "-";
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " || temp" + x + "\n";
-
-				continue;
-			}
-			return thisTempID;
-		}
-		
 	}
 	
 	int E() {

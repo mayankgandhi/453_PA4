@@ -73,7 +73,6 @@ public class MoreJava {
 		
 	}
 	
-	
 	void control_flow() {
 		if (lookahead.equals("if")) {
 			tempID = 0;
@@ -135,6 +134,20 @@ public class MoreJava {
 			e = new ThreeAddressQuad("GOTO",null,null,"trueLabel"+Integer.toString(thisLabel));
 			System.out.println("---------------"+ e.toString());
 			
+			if(lookahead.equals("&&"))
+			{
+				match('&');
+				control_flow();
+				System.out.println("HERE");
+				
+			}
+			else if(lookahead=="||")
+			{
+				match('|');
+				control_flow();
+				System.out.println("HERE");
+
+			}
 			
 			
 			if (!lookahead.equals(")"))
@@ -263,48 +276,6 @@ public class MoreJava {
 		}
 	}
 
-	int X()	{
-		int x = E();
-		int thisTempID = x;
-
-		while (true) {
-			// if current token is a plus
-			if (lookahead.equals("&&")) {
-				match('+');
-				int prev = x;
-				x = E();
-				thisTempID = tempID;
-				tempID++;
-
-				if (prevSymbol.equals("&&"))
-					prev++;
-				else
-					prevSymbol = "+";
-
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " && temp" + x + "\n";
-
-				continue;
-			}
-			// if current token is a minus
-			else if (lookahead.equals("||")) {
-				match('-');
-
-				int prev = x;
-				x = E();
-				thisTempID = tempID;
-				tempID++;
-				if (prevSymbol.equals("||"))
-					prev++;
-				else
-					prevSymbol = "-";
-				this.threeAddressResult += "temp" + thisTempID + " = temp" + prev + " || temp" + x + "\n";
-
-				continue;
-			}
-			return thisTempID;
-		}
-		
-	}
 	
 	int E() {
 		int x = T();

@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="threeAddressResult"/>
+		<item key="selection" value="program"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="program"/>
+			<item value="program()"/>
+			<item value="void"/>
+			<item value="GOTO"/>
+			<item value="control"/>
+			<item value="exit_program"/>
+			<item value="Missing"/>
+			<item value="Missinh"/>
+			<item value="missing"/>
+			<item value="missing equals"/>
+			<item value="equals"/>
+			<item value="Missing&#x0A;"/>
+			<item value="Missing equals&#x0A;"/>
 			<item value="threeAddressResult"/>
 			<item value="threeAddressResultList"/>
-			<item value="IF_LT"/>
-			<item value="LETS GO"/>
-			<item value="ThreeAddressQuad"/>
 		</list>
 		<list key="replacehistory">
 			<item value="&quot; = &quot;"/>
